@@ -1,0 +1,81 @@
+Lightning Fast Events
+Emitting in a concurrent world
+
+Jamie Cuthill
+6 May 2020
+jc@flyt.io
+
+* Background
+
+The [[https://github.com/flypay/flyt-monolith-bridge-plu-mapper][PLU bridge]] receives a `menu_changed` webhook and is responsible for raising PLU discovered events for that new menu. 
+
+We receive a huge payload with thousands of mappings.
+
+	{
+		"reference": "ML:AU:11003791",
+		"mappings": [
+			{
+				"plus": ["2884.2:2883"],
+				"uuid": "996c72ec-9d52-5449-85d4-a50ea513f9a7"
+			},
+			{
+				"plus": ["2884.2:2883"],
+				"portionID": "996c72ec-9d52-5449-85d4-a50ea513f9a7",
+				"uuid": "52183600-c7ed-5232-afcc-f79d84fc3913"
+			},
+			...
+	}
+
+* Implementation
+
+- Iterate through the mappings array
+- Emit each PLU discovered events
+- Profit.
+
+	for _, item := range Mappings {
+		for _, plu := range item.Plus {
+			err = Emit(ctx, &flyt.PluDiscovered{
+				Plu:          plu,
+				ItemId:       itemData.UUID,
+				RestaurantId: restID,
+				ParentId:     itemData.ParentID,
+				PortionId:    itemData.PortionID,
+			})
+			//...
+		}
+	}
+
+* In Practice
+
+The `Emit()` call can take anywhere from 50ms up to 6s and is called in sequence.
+
+The result was very slow and consumed a lot of memory.
+
+.image fan-out/images/elapsedtime.png
+.caption Yes that is in minutes (per location)
+
+* Optimising
+
+* Concurrency
+
+We can leverage Go's fantastic concurrency primitives to optimise things 
+that are slow that can also be parallelised.
+
+- goroutines
+- channels
+
+* Re-implementing
+
+The technique here is similar to [[https://blog.golang.org/pipelines][fan-out]] or [[https://gobyexample.com/worker-pools][worker pooling]].
+
+We create a channel and start `n` workers (tune `n` as you see fit).
+
+	queue := make(chan flyt.PluDiscovered)
+
+	for i := n; i > 0; i-- {
+		go d.worker(queue)
+	}
+
+_Note_ synchronisation omitted to clarity_
+
+.caption _Gopher_ by [[https://instagram.com/reneefrench][Renee French]]
