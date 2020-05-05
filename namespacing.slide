@@ -1,0 +1,54 @@
+# Namespacing Events
+
+Jamie Cuthill
+6 May 2020
+jc@flyt.io
+
+## Single Package
+
+Thus far we have worked purely in the `flyt` namespace of our events repo. This has resulted in...
+
+- Confusingly similar events
+- Events prefixed with a namespace
+
+**For example**
+
+	message WhitelabelOrderCreated {
+		...
+	}
+	
+	message OrderCreated {
+		...
+	}
+
+## Introducing Namespacing {#fmt}
+
+There is nothing stopping us from using proto namespacing.
+
+**whitelabel/user.proto**
+
+	syntax = "proto3";
+
+	package whitelabel;
+
+	import "flyt/descriptor.proto";
+
+	// UserCreated is raised when a user signs up for the first time
+	message UserCreated {
+  		option (flyt.topic_name) = "whitelabel.user.created";
+  		string id = 1;
+  		string email = 2;
+	}
+
+## One Caveat
+
+Each namespace must be added to the [prototool config](https://github.com/flypay/events/blob/master/prototool.yaml).
+
+**prototool.yaml**
+
+	create:
+	  packages:
+		- directory: flyt
+		  name: flyt
+		- directory: whitelabel
+		  name: whitelabel
