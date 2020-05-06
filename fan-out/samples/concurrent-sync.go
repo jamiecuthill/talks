@@ -2,9 +2,14 @@ package main
 
 import (
 	"fmt"
+	"runtime"
 	"sync"
 	"time"
 )
+
+func init() {
+	runtime.GOMAXPROCS(2)
+}
 
 type T struct {
 	ID int
