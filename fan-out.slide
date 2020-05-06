@@ -105,7 +105,7 @@ Now we just need to alter our original for loop to push the event into the queue
 
 * What would this output?
 
-*
+* 
 
 The output of the previous sample is indeterminate and incomplete
 
@@ -129,7 +129,7 @@ What happened to 6, 8 and 9?
 
 .code fan-out/samples/concurrent-sync.go /STARTW OMIT/,/ENDW OMIT/
 
-*
+* 
 
 Now our output looks more like you would expect
 
