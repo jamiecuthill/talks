@@ -34,14 +34,13 @@ We receive a huge payload with thousands of mappings.
 
 	for _, item := range Mappings {
 		for _, plu := range item.Plus {
-			err = Emit(ctx, &flyt.PluDiscovered{
+			Emit(ctx, &flyt.PluDiscovered{
 				Plu:          plu,
-				ItemId:       itemData.UUID,
+				ItemId:       item.UUID,
 				RestaurantId: restID,
-				ParentId:     itemData.ParentID,
-				PortionId:    itemData.PortionID,
+				ParentId:     item.ParentID,
+				PortionId:    item.PortionID,
 			})
-			//...
 		}
 	}
 
@@ -61,8 +60,10 @@ The result was very slow and consumed a lot of memory.
 We can leverage Go's fantastic concurrency primitives to optimise things 
 that are slow that can also be parallelised.
 
-- goroutines
 - channels
+- goroutines
+
+.image fan-out/images/concurrent-flow.png
 
 * Re-implementing
 
@@ -73,9 +74,94 @@ We create a channel and start `n` workers (tune `n` as you see fit).
 	queue := make(chan flyt.PluDiscovered)
 
 	for i := n; i > 0; i-- {
-		go d.worker(queue)
+		go worker(queue)
 	}
 
-_Note_ synchronisation omitted to clarity_
+	func worker(in chan flyt.PluDiscovered) {
+		for event := range in {
+			Emit(ctx, &ev)
+		}
+	}
 
-.caption _Gopher_ by [[https://instagram.com/reneefrench][Renee French]]
+* Re-implementing
+
+Now we just need to alter our original for loop to push the event into the queue.
+
+	for _, item := range Mappings {
+		for _, plu := range item.Plus {
+			queue <- flyt.PluDiscovered{
+				Plu:          plu,
+				ItemId:       item.UUID,
+				RestaurantId: restID,
+				ParentId:     item.ParentID,
+				PortionId:    item.PortionID,
+			}
+		}
+	}
+
+* Without Synchronisation
+
+.play fan-out/samples/concurrent-nosync.go /START OMIT/,/END OMIT/
+
+* What would this output?
+
+*
+
+The output of the previous sample is indeterminate and incomplete
+
+	start
+	emit 5
+	emit 3
+	emit 4
+	emit 1
+	emit 2
+	done
+	emit 7
+	emit 10
+
+Complete ❌ 
+
+What happened to 6, 8 and 9?
+
+* ⏳ Waiting
+
+.play fan-out/samples/concurrent-sync.go /START OMIT/,/END OMIT/
+
+.code fan-out/samples/concurrent-sync.go /STARTW OMIT/,/ENDW OMIT/
+
+*
+
+Now our output looks more like you would expect
+
+	start
+	emit 5
+	emit 2
+	emit 3
+	emit 4
+	emit 1
+	emit 6
+	emit 8
+	emit 7
+	emit 9
+	emit 10
+	done
+
+Complete ✅ 
+
+* Analysis
+
+How does this new code perform? 
+
+.image fan-out/images/elapsedtime-after.png
+
+.caption With 100 workers, even the largest menus are now under 1m
+
+* When can I apply this?
+
+- Work where the order does not matter.
+- Slow processes that can run in parallel.
+
+*Examples*
+
+- Fetching many records from a data store.
+- Making independent HTTP requests.
