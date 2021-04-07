@@ -1,0 +1,75 @@
+# Engineering Q2 2021
+Handbook and Continuous Delivery
+
+Jamie Cuthill
+12 April 2021
+jc@flyt.io
+
+## 👋🏻 Hello and Welcome
+
+: Lots of new faces
+
+## A challenge of a growing a distributed engineering guild is maintaining our engineering expectations and standards.
+
+: When we were a small team in one physical location we were able to agree on how to engineer our software.
+
+## 
+
+.background assets/2021-q2/aaron-burden-9zsHNt5OpqE-unsplash.jpg
+
+: Now that we are a large and growing distrubuted group unwritten rules and procedures just don't cut it.
+
+## Engineering Handbook
+
+Our solution is a written document that defines all of the expectations to which we believe contribute to a healthy, agile and successful engineering culture.
+
+Please read and contribute to [📘 the handbook](https://www.notion.so/flyt/Engineering-Handbook-19a30bf1969d47e088962c6e34d46c85).
+
+The aim is to have one page to which we can point new or existing engineers for them to understand how we expect things to be done.
+
+##  Regularly delivering software that works, every time, is key to meeting our goals
+
+: Our agreed and adopted software development lifecycle aims to get changes out to production and into our customers hands as soon as it's ready.
+
+## 
+
+.background assets/2021-q2/jackie-zhao-W-ypTC6R7_k-unsplash.jpg
+
+## Continuous Delivery
+
+> _Continuous Delivery is the ability to get changes of all types—including new features, configuration changes, bug fixes and experiments—into production, or into the hands of users, safely and quickly in a sustainable way._ [continuousdelivery.com](https://continuousdelivery.com/)
+
+
+## There are five principles at the heart of continuous delivery:
+
+- Build **quality** in
+- Work in **small batches**
+- Computers perform repetitive tasks, people solve problems
+- Relentlessly pursue **continuous improvement**
+- **Everyone** is responsible
+
+See [CD principles](https://continuousdelivery.com/principles/)
+
+: Quality - Feedback loops early in the process, before commit (unit tests, linting etc)
+: Small Batches - Rapid, often feedback of every small change in version control. Bigger the change the riskier the deployment.
+: Repetitive Tasks - Automated Capability Tests to ensure changes are safe. Imagine if we had to manually QA (test) every service deployment? Allows us to focus on the important, interesting tasks.
+: Continuous Improvement - Always be thinking of how our processes, tools or solutions could be better. Small improvements add up over time.
+: Everyone - Nothing is somebody elses problem. When you see an issue and you have the time to fix it, go ahead and do so. If you don't have the time, at least document the issue as a GH issue so you can resolve it when you do have the time. Solve it for everyone, don't brush it under the carpet.
+
+## The Deployment Pipeline
+
+.image assets/2021-q2/cd-deployment-pipeline.png _ 1000
+
+Automated testing is vital to achieve automaic promotion through the pipeline. 
+
+Integration testing (capability testing) is never _finished_ but is  always evolving as the business adds to, or alters, its products.
+
+: If we have no changes to make to our capability tests, does that mean we have stopped building software and can take the rest of the year off?
+
+##
+
+.background assets/2021-q2/dawid-zawila--G3rw6Y02D0-unsplash.jpg
+
+## Thank You - Any Questions?
+
+
