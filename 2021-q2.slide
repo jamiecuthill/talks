@@ -1,5 +1,4 @@
 # Engineering Q2 2021
-Handbook and Continuous Delivery
 
 Jamie Cuthill
 12 April 2021
@@ -7,9 +6,9 @@ jc@flyt.io
 
 ## 👋🏻 Hello and Welcome
 
-: Lots of new faces
+: Lots of new faces - nice to see so many of them but brings it's own challenges.
 
-## A challenge of a growing a distributed engineering guild is maintaining our engineering expectations and standards.
+## A challenge of a growing a distributed engineering guild is maintaining our standards and expectations.
 
 : When we were a small team in one physical location we were able to agree on how to engineer our software.
 
@@ -18,6 +17,8 @@ jc@flyt.io
 .background assets/2021-q2/aaron-burden-9zsHNt5OpqE-unsplash.jpg
 
 : Now that we are a large and growing distrubuted group unwritten rules and procedures just don't cut it.
+
+: Something tangible that we can point at and agree upon.
 
 ## Engineering Handbook
 
@@ -34,6 +35,10 @@ The aim is to have one page to which we can point new or existing engineers for 
 ## 
 
 .background assets/2021-q2/jackie-zhao-W-ypTC6R7_k-unsplash.jpg
+
+: Don't deliver bugs
+
+: How do we deliver reliable software, what approach do we have to software delivery?
 
 ## Continuous Delivery
 
@@ -69,6 +74,15 @@ Integration testing (capability testing) is never _finished_ but is  always evol
 ##
 
 .background assets/2021-q2/dawid-zawila--G3rw6Y02D0-unsplash.jpg
+
+: Before we ride off into the sunset and get stuck into Q2.
+
+## Remember
+
+- Please update your service metadata
+- Take care of your services
+- Investigate capability test failures / flakiness
+- Be nice
 
 ## Thank You - Any Questions?
 
